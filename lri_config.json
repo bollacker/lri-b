@@ -1,0 +1,21 @@
+{
+ "host":"192.168.1.22",
+ "port":9000,
+ "neo4j_dir":"/home/kurt/neo/neo4j-community-1.8",
+ "neo4j_server_host":"192.168.1.22",
+ "neo4j_server_port":7474,
+ "slc_server_host":"api.sandbox.slcedu.org",
+ "slc_token_check_path":"/api/rest/system/session/check",
+ "cache_type":"memcached",
+ "memcached_host":"192.168.1.22",
+ "memcached_port":"11211",
+ "bootstrap_filenames":["/home/kurt/neo/lri_schema/bootstrap.json",
+                        "/home/kurt/neo/lri_schema/cc_schema.json",
+                        "/home/kurt/neo/lri_schema/schema.org_fixed.json",
+                        "/home/kurt/neo/lri_schema/lrmi_fixed.json"],
+ "default_creator_guid":"LRI_TEST_CREATOR",
+ "admin_passwd":"fr00tlupe",
+ "use_cache":true,
+ "admin_access_tokens":{"letmein":"LRI_ADMIN_USER_0","regtest":"regtest"},
+ "delegate_tokens":["DELEGATE_0"]
+}
