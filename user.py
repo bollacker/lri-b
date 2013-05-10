@@ -20,7 +20,7 @@ default_url_path = '/api/rest/system/session/check'
 default_ttl = 900  # Every 15 mins we check again
 
 def make_user_id_urn(s):
-    return "urn:slc:user:"+s
+    return "urn:inbloom:user:"+s
 
 class user(object):
 
@@ -113,10 +113,10 @@ class user(object):
 
         if self.realm and self.user_id:
             self.state = 'PARSED'
-            self.id = 'urn:slcedu:user:%s:%s' % (self.realm,self.user_id)
+            self.id = 'urn:inbloom:user:%s:%s' % (self.realm,self.user_id)
             self.authenticated_by = 'SLC'
             return True
-        self.errors = ['Unable to parse SLC authentication response: '+repr(self.resp)]
+        self.errors = ['Unable to parse inBloom authentication response: '+repr(self.resp)]
         return False
 
     def __str__(self):
