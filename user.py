@@ -114,7 +114,7 @@ class user(object):
         if self.realm and self.user_id:
             self.state = 'PARSED'
             self.id = 'urn:inbloom:user:%s:%s' % (self.realm,self.user_id)
-            self.authenticated_by = 'SLC'
+            self.authenticated_by = 'inBloom'
             return True
         self.errors = ['Unable to parse inBloom authentication response: '+repr(self.resp)]
         return False
