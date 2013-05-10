@@ -234,7 +234,7 @@ class neorest(lridb.lridb):
             except Exception, e:
                 tries += 1
                 neoerrs = traceback.format_exc().split("\n")
-                self.log.debug("FAILING CYPHER QUERY =",repr(q),"-- TRYING %d more times."  % (3-max_tries))
+                self.log.debug("FAILING CYPHER QUERY =",repr(q),"-- TRYING %d more times."  % (3-tries))
                 time.sleep(0.1)
 
         if not success:

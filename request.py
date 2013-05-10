@@ -47,8 +47,8 @@ class request(object):
             else:
                 # Must be normal or admin access_token
                 self.user = user.user(access_token = self.opts.get("access_token",""),
-                                      slc_server = self.db.config.get("slc_server_host",user.default_slc_server),
-                                      url_path = self.db.config.get("slc_token_check_path",user.default_url_path),
+                                      #slc_server = self.db.config.get("slc_server_host",user.default_slc_server),
+                                      #url_path = self.db.config.get("slc_token_check_path",user.default_url_path),
                                       admin_access_tokens = self.db.config.get("admin_access_tokens",{}),
                                       delegate_tokens = self.db.config.get("delegate_tokens",[]),
                                       cache = self.cache)
@@ -286,7 +286,7 @@ class request(object):
 
     def bad_user(self):
         self.r["status"]="error"
-        self.r["message"]=["Invalid access token: "+repr(self.opts.get("access_token"))]
+        self.r["message"]=["Unable to confirm access token: "+repr(self.opts.get("access_token"))]
         self.errors += self.user.errors
         self.r["message"] += self.errors
         self.http_status = "401 Unauthorized"

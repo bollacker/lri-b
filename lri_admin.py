@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import lridb,sys,neo4j,json,schema,subprocess,traceback,regression,neo_admin,pywebapp,os
+import lridb,sys,neo4j,json,schema,subprocess,traceback,regression,neo_admin,os
 import neorest
 
 class lri_admin(object):

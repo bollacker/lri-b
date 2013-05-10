@@ -406,16 +406,20 @@ class lridb(object):
         '''
         # Run our subqueries
         old_results = set((q['leftover_results']))
-        new_results=set()
+        new_results = set()
 
         # Max tries is the number of iterations we attempt get get enough results
         # If we run out of tries, it probably means the query is taking too long
         # (e.g. We are intersecting large sets with little overlap)
         max_tries = 10
         try_count = 0
+
         while len(old_results | new_results) < q['limit'] and try_count < max_tries:
             new_results = set(self.perform_subqueries(q,new_results,creator=q.get('creator'),in_bootstrap=in_bootstrap))
             try_count += 1
+            if len(new_results) > 0 and len(new_results) < q['limit']:
+                # We've run out of results
+                break
         self.log.debug("COMPLETED QUERIES:",json.dumps(q['subqueries'],indent=4,sort_keys=True))
 
         final_results = list(old_results | new_results)
@@ -525,7 +529,7 @@ class lridb(object):
         
         hits = []
         for cs in final_scs:
-            sh = self.property_search(constraints=cs,in_bootstrap=in_bootstrap)
+            sh = self.property_search(constraints=cs,in_bootstrap=in_bootstrap,start=start)
             if sh == False:
                 self.log.debug(self.errors)
                 return None
@@ -674,7 +678,7 @@ class lridb(object):
 
         return e
             
-    def property_search(self,constraints,in_bootstrap=False):
+    def property_search(self,constraints,in_bootstrap=False,start=None):
 
         constraints = copy.deepcopy(constraints)
         is_reverse = False
@@ -757,7 +761,7 @@ class lridb(object):
             constraints["replaced_by"]=""
 
         props = []
-        hits = self.link_search(constraints)
+        hits = self.link_search(constraints,start=start)
         #hits = self.link_index.query(q)
         self.log.debug("PROP SEARCH HIT COUNT =",len(hits))
 

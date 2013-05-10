@@ -176,8 +176,9 @@ try:
         ext_cache = cache.make_cache(config)
         try:
             db = neorest.neorest(config=config,create_indices=False)
-        except:
-            print "UNABLE TO SETUP NEO4J DATABASE"
+        except Exception, e:
+            print "UNABLE TO SETUP NEO4J DATABASE!"
+            print traceback.format_exc()
             valid_setup = False
     except:
         print "UNABLE TO SET UP CACHE"

@@ -14,7 +14,7 @@
 # limitations under the License.
 import json,datetime,traceback,httplib,cache,sys
 
-default_slc_server = 'api.sandbox.slcedu.org'
+default_slc_server = 'api.sandbox.inbloom.org'
 default_url_path = '/api/rest/system/session/check'
 
 default_ttl = 900  # Every 15 mins we check again
@@ -68,17 +68,25 @@ class user(object):
   
     def authenticate_slc(self):
         self.timestamp = datetime.datetime.utcnow().isoformat()
+        data = None
 
+        print 'GET',self.url_path,'',self.headers
         try:
             conn = httplib.HTTPSConnection(self.slc_server)
             req = conn.request('GET',self.url_path,'',self.headers)
             r = conn.getresponse()
             data = r.read()
-            print "SLC request:",self.url_path
-            print "SLC raw response:",repr(data)
+        except Exception, e:
+            self.errors = ["UNABLE TO CONNECT TO AUTHORIZATION SERVER!",
+                           "inBloom request:",repr(self.url_path),"headers:",json.dumps(self.headers),"inBloom raw response:",repr(data)]
+            self.state = 'ERROR'
+            return False
+        try:
             self.resp = json.loads(data)
         except Exception, e:
-            self.errors = traceback.format_exc().split("\n")
+            self.errors = ["BAD JSON RESPONSE FROM AUTHORIZATION SERVER!",
+                           "inBloom request:",repr(self.url_path),"headers:",json.dumps(self.headers),"inBloom raw response:",repr(data)]
+            self.errors.extend(traceback.format_exc().split("\n"))
             self.state = 'ERROR'
             return False
 
@@ -90,7 +98,9 @@ class user(object):
             else:
                 return False
         else:
-            self.errors = ["Authentication failure"]
+            self.errors = ["UNPARSEABLE RESPONSE FROM AUTHORIZATION SERVER!",
+                           "inBloom request:",repr(self.url_path),"headers:",json.dumps(self.headers),"inBloom raw response:",repr(data)]
+            self.errors.extend(["Authentication failure"])
              
             self.state = 'INVALID'
             return False

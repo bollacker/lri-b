@@ -97,10 +97,10 @@ class memcached_cache(lri_cache):
         self.cache = memcache.Client([host+':'+str(port)])
 
     def read(self,k):
-        return parse_value(self.cache.get(k))
+        return parse_value(self.cache.get(k.encode('utf-8')))
 
     def write_pair(self,k,v):
-        self.cache.set(k,make_value(v))
+        self.cache.set(k.encode('utf-8'),make_value(v))
         return True
 
     def delete(self,k):
